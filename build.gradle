@@ -1,0 +1,104 @@
+buildscript {
+    ext.kotlinVersion = "1.1.2-2"
+    ext.swtVersion = "4.6.1"
+    ext.osName = System.getProperty("os.name").toLowerCase(Locale.ENGLISH)
+
+    switch (ext.osName) {
+        case { it.contains("mac") }:
+            ext.swtVariant = "cocoa.macosx.x86_64"
+            break
+        case { it.contains("windows") }:
+            ext.swtVariant = "win32.win32.x86_64"
+            break
+        case { it.contains("linux") }:
+            ext.swtVariant "gtk.linux.x86_64"
+            break
+        default:
+            throw new GradleException("Cannot determine the SWT dependencies for '${ext.osName}'")
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+allprojects {
+    group "swtlin"
+    version "0.0.1"
+}
+
+subprojects {
+    apply plugin: "kotlin"
+
+    repositories {
+        mavenCentral()
+        maven { url "http://maven-eclipse.github.io/maven" }
+    }
+
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+        compile "org.eclipse.swt:org.eclipse.swt.$swtVariant:$swtVersion"
+    }
+}
+
+project(":builder") {
+    //
+    // Because of this bug:
+    // https://discuss.gradle.org/t/gradle-test-task-and-xstartonfirstthread/6844
+    //
+    // Running tests that depends on SWT doesn't work with the Gradle test launcher.
+    // The workaround is to use the junitTask from Ant.
+    //
+    configurations {
+        junitAntTask
+    }
+
+    dependencies {
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+        testCompile "junit:junit:4.12"
+        junitAntTask "org.apache.ant:ant-junit:1.9.7", "org.apache.ant:ant-junit4:1.9.7"
+    }
+
+    test {
+        actions = []
+        ant.taskdef(
+                name: "junitTask",
+                classname: "org.apache.tools.ant.taskdefs.optional.junit.JUnitTask",
+                classpath: configurations.junitAntTask.asPath)
+
+        doLast {
+            ant.junitTask(
+                    showoutput: true,
+                    fork: true,
+                    forkmode: "once",
+                    clonevm: true,
+                    haltonerror: true,
+                    haltonfailure: true) {
+
+                if (osName.contains("mac")) {
+                    jvmarg value: "-XstartOnFirstThread"
+                }
+
+                batchtest(toDir: "${project.projectDir.path}/build/tests") {
+                    fileset (dir: project.sourceSets.test.output.classesDir) {
+                        include name: "**/*Test.class"
+                    }
+                }
+
+                classpath location: project.sourceSets.main.output.classesDir
+                classpath location: project.sourceSets.test.output.classesDir
+                classpath path: project.sourceSets.test.compileClasspath.asPath
+            }
+        }
+    }
+}
+
+project(":examples") {
+    dependencies {
+        compile project(":builder")
+    }
+}
