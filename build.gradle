@@ -35,7 +35,7 @@ subprojects {
     apply plugin: "kotlin"
 
     repositories {
-        mavenCentral()
+        jcenter()
         maven { url "http://maven-eclipse.github.io/maven" }
     }
 
@@ -43,7 +43,7 @@ subprojects {
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
         compile "org.eclipse.swt:org.eclipse.swt.$swtVariant:$swtVersion"
     }
-}
+}   
 
 project(":builder") {
     //
