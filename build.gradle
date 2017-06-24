@@ -84,13 +84,19 @@ project(":builder") {
                 }
 
                 batchtest(toDir: "${project.projectDir.path}/build/tests") {
-                    fileset (dir: project.sourceSets.test.output.classesDir) {
-                        include name: "**/*Test.class"
+                    project.sourceSets.test.output.classesDirs.each { dir ->
+                        fileset(dir: dir) {
+                            include name: '**/*Test.class'
+                        }
                     }
                 }
 
-                classpath location: project.sourceSets.main.output.classesDir
-                classpath location: project.sourceSets.test.output.classesDir
+                project.sourceSets.main.output.classesDirs.each {
+                    classpath location: it
+                }
+                project.sourceSets.test.output.classesDirs.each {
+                    classpath location: it
+                }
                 classpath path: project.sourceSets.test.compileClasspath.asPath
             }
         }
