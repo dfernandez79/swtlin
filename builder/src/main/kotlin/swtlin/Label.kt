@@ -5,7 +5,7 @@ import org.eclipse.swt.widgets.Label
 
 fun label(block: LabelDescription.() -> Unit = {}) = LabelBuilder().also { it.block() }
 
-fun CompositeDescription.label(id: String? = null, block: LabelDescription.() -> Unit = {}) =
+fun ControlBuilderContainer.label(id: String? = null, block: LabelDescription.() -> Unit = {}) =
         label(block).also { this.add(id, it) }
 
 interface LabelDescription : ControlDescription<Label> {
