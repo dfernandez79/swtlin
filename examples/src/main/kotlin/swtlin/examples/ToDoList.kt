@@ -9,7 +9,7 @@ fun main(args: Array<String>) {
         shell.setSize(300, 200)
 
         shell.children {
-            layout = formLayout()
+            layout = formLayout(5, 5)
 
             text("todoInput") {
                 left = 0

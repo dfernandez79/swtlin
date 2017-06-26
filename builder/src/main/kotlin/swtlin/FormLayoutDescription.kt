@@ -7,7 +7,9 @@ import org.eclipse.swt.layout.FormLayout
 import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.Control
 
-fun formLayout() = FormLayoutDescription()
+fun formLayout(marginLeft: Int = 0, marginTop: Int = 0,
+               marginRight: Int = marginLeft, marginBottom: Int = marginTop) =
+        FormLayoutDescription(marginLeft, marginTop, marginRight, marginBottom)
 
 class ControlAttachment(private val id: String, private val offset: Int, private val alignment: Int) {
     fun createFormAttachment(refs: ControlReferences) = FormAttachment(refs[id], offset, alignment)
@@ -17,9 +19,18 @@ fun Int.fromLeftOf(id: String) = ControlAttachment(id, -this, SWT.LEFT)
 
 fun Int.fromBottomOf(id: String) = ControlAttachment(id, this, SWT.BOTTOM)
 
-class FormLayoutDescription : LayoutDescription {
-    override fun layout(parent: Composite, pairs: List<Pair<ControlDescription<*>, Control>>, refs: Map<String, Control>) {
-        parent.layout = FormLayout()
+class FormLayoutDescription(val marginLeft: Int = 0,
+                            val marginTop: Int = 0,
+                            val marginRight: Int = 0,
+                            val marginBottom: Int = 0) : LayoutDescription {
+    override fun layout(parent: Composite, pairs: List<Pair<ControlDescription<*>, Control>>,
+                        refs: Map<String, Control>) {
+        val formLayout = FormLayout()
+        parent.layout = formLayout
+        formLayout.marginLeft = marginLeft
+        formLayout.marginTop = marginTop
+        formLayout.marginRight = marginRight
+        formLayout.marginBottom = marginBottom
 
         for ((description, control) in pairs) {
             layoutControl(description, control, refs)

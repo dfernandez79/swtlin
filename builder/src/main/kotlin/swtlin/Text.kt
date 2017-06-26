@@ -1,5 +1,6 @@
 package swtlin
 
+import org.eclipse.swt.SWT
 import org.eclipse.swt.widgets.Text
 
 fun text(block: TextDescription.() -> Unit = {}) = builder(::TextBuilder, block)
@@ -13,6 +14,10 @@ interface TextDescription : ControlDescription<Text> {
 
 class TextBuilder : AbstractControlBuilder<Text>(::Text), TextDescription {
     override var text: String = ""
+
+    init {
+        style = SWT.BORDER
+    }
 
     override fun setUpControl(control: Text, refs: MutableControlReferences?) {
         control.text = text
