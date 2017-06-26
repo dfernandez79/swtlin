@@ -1,10 +1,21 @@
 package swtlin
 
+import org.eclipse.swt.SWT
 import org.eclipse.swt.layout.FormAttachment
 import org.eclipse.swt.layout.FormData
 import org.eclipse.swt.layout.FormLayout
 import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.Control
+
+fun formLayout() = FormLayoutDescription()
+
+class ControlAttachment(private val id: String, private val offset: Int, private val alignment: Int) {
+    fun createFormAttachment(refs: ControlReferences) = FormAttachment(refs[id], offset, alignment)
+}
+
+fun Int.fromLeftOf(id: String) = ControlAttachment(id, -this, SWT.LEFT)
+
+fun Int.fromBottomOf(id: String) = ControlAttachment(id, this, SWT.BOTTOM)
 
 class FormLayoutDescription : LayoutDescription {
     override fun layout(parent: Composite, pairs: List<Pair<ControlDescription<*>, Control>>, refs: Map<String, Control>) {
@@ -26,12 +37,10 @@ class FormLayoutDescription : LayoutDescription {
         createAttachment(description.layoutData["bottom"], refs, true)?.let { formData.bottom = it }
     }
 
-    private fun createAttachment(value: Any?, refs: Map<String, Control>, negate: Boolean = false): FormAttachment? {
-        val sign = if (negate) -1 else 1
-
-        return when (value) {
-            is Int -> FormAttachment(if (negate) 100 else 0, sign * value)
-            else -> null
-        }
-    }
+    private fun createAttachment(value: Any?, refs: Map<String, Control>, negate: Boolean = false): FormAttachment? =
+            when (value) {
+                is Int -> FormAttachment(if (negate) 100 else 0, (if (negate) -1 else 1) * value)
+                is ControlAttachment -> value.createFormAttachment(refs)
+                else -> null
+            }
 }

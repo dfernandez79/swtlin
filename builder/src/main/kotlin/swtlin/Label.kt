@@ -1,25 +1,20 @@
 package swtlin
 
-import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.Label
 
-fun label(block: LabelDescription.() -> Unit = {}) = LabelBuilder().also { it.block() }
+fun label(block: LabelDescription.() -> Unit = {}) = builder(::LabelBuilder, block)
 
 fun ControlBuilderContainer.label(id: String? = null, block: LabelDescription.() -> Unit = {}) =
-        label(block).also { this.add(id, it) }
+        builder(::LabelBuilder, block, id, this)
 
 interface LabelDescription : ControlDescription<Label> {
     var text: String
 }
 
-class LabelBuilder : AbstractControlDescription<Label>(), LabelDescription, ControlBuilder<Label> {
-    private val factory = GenericControlFactory(this, ::Label, this::setUpControl)
-
+class LabelBuilder : AbstractControlBuilder<Label>(::Label), LabelDescription {
     override var text: String = ""
 
-    override fun createControl(parent: Composite, refs: MutableControlReferences?) = factory.createControl(parent, refs)
-
-    fun setUpControl(control: Label) {
+    override fun setUpControl(control: Label, refs: MutableControlReferences?) {
         control.text = text
     }
 }
