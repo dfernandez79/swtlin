@@ -15,9 +15,9 @@ class ControlAttachment(private val id: String, private val offset: Int, private
     fun createFormAttachment(refs: ControlReferences) = FormAttachment(refs[id], offset, alignment)
 }
 
-fun Int.fromLeftOf(id: String) = ControlAttachment(id, -this, SWT.LEFT)
+infix fun Int.fromLeftOf(id: String) = ControlAttachment(id, -this, SWT.LEFT)
 
-fun Int.fromBottomOf(id: String) = ControlAttachment(id, this, SWT.BOTTOM)
+infix fun Int.fromBottomOf(id: String) = ControlAttachment(id, this, SWT.BOTTOM)
 
 class FormLayoutDescription(val marginLeft: Int = 0,
                             val marginTop: Int = 0,

@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
             text("todoInput") {
                 left = 0
                 top = 0
-                right = 10.fromLeftOf("add")
+                right = 10 fromLeftOf "add"
             }
 
             button("add") {
@@ -24,7 +24,7 @@ fun main(args: Array<String>) {
             }
 
             table {
-                top = 10.fromBottomOf("todoInput")
+                top = 10 fromBottomOf "todoInput"
                 left = 0
                 right = 0
                 bottom = 0
