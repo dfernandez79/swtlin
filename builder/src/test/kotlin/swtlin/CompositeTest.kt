@@ -25,7 +25,9 @@ class CompositeTest {
 
     @After
     fun disposeShell() {
-        shell?.dispose()
+        if (shell != null && !shell!!.isDisposed) {
+            shell?.dispose()
+        }
     }
 
     @Test
@@ -145,11 +147,22 @@ class CompositeTest {
     }
 
     @Test
-    fun `Uses FillLayout`() {
+    fun `Use fillLayout`() {
         val result = composite {
             layout = fillLayout()
         }.createControl(shell!!)
 
         assertTrue(result.layout is FillLayout)
     }
+//
+//    @Test
+//    fun `Dispose disposable resources on dispose`() {
+//        val result = composite {
+//            background = rgba(128, 128, 128, 1)
+//        }.createControl(shell!!)
+//
+//        val createdColor = result.background
+//        shell?.dispose()
+//        assertTrue(createdColor.isDisposed)
+//    }
 }

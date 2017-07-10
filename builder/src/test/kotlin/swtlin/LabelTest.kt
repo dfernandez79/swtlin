@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Shell
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import swtlin.core.MutableControlReferences
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue

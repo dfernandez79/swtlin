@@ -1,11 +1,15 @@
 package swtlin.examples
 
+import org.eclipse.swt.SWT
+import org.eclipse.swt.widgets.Button
 import org.eclipse.swt.widgets.Shell
 import swtlin.*
 
 fun main(args: Array<String>) {
     example {
         val shell = Shell()
+        var ref: Button? = null
+
         shell.setSize(300, 200)
 
         shell.children {
@@ -21,6 +25,9 @@ fun main(args: Array<String>) {
                 text = "Add"
                 top = 0
                 right = 0
+                background = systemColor(SWT.COLOR_RED)
+
+                setUp { btn -> ref = btn }
             }
 
             table {
@@ -30,5 +37,13 @@ fun main(args: Array<String>) {
                 bottom = 0
             }
         }
+        shell.layout()
+
+        if (ref != null) {
+            println(ref?.borderWidth)
+            println(ref?.bounds)
+        }
+
+        shell
     }
 }

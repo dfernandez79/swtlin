@@ -2,6 +2,7 @@ package swtlin
 
 import org.eclipse.swt.SWT
 import org.eclipse.swt.widgets.Text
+import swtlin.core.*
 
 fun text(block: TextDescription.() -> Unit = {}) = builder(::TextBuilder, block)
 

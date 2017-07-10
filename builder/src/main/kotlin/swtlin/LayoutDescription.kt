@@ -4,6 +4,7 @@ import org.eclipse.swt.layout.FillLayout
 import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.Control
 import org.eclipse.swt.widgets.Layout
+import swtlin.core.ControlDescription
 
 interface LayoutDescription {
     fun layout(parent: Composite, pairs: List<Pair<ControlDescription<*>, Control>>, refs: Map<String, Control>)

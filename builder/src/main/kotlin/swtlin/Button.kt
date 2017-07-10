@@ -1,6 +1,7 @@
 package swtlin
 
 import org.eclipse.swt.widgets.Button
+import swtlin.core.*
 
 fun button(block: ButtonDescription.() -> Unit = {}) = builder(::ButtonBuilder, block)
 

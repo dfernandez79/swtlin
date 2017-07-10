@@ -1,6 +1,7 @@
 package swtlin
 
 import org.eclipse.swt.widgets.Composite
+import swtlin.core.*
 
 fun composite(block: CompositeDescription.() -> Unit = {}) = builder(::CompositeBuilder, block)
 
@@ -14,7 +15,7 @@ interface CompositeDescription : ControlDescription<Composite>, ControlBuilderCo
 }
 
 class CompositeBuilder : AbstractControlBuilder<Composite>(::Composite), CompositeDescription {
-    private val container = GenericControlBuilderContainer()
+    private val container = IdentifiedControlBuilderContainer()
 
     override var layout: LayoutDescription = FormLayoutDescription()
 

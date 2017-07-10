@@ -2,6 +2,9 @@ package swtlin
 
 import org.eclipse.swt.widgets.Control
 import org.eclipse.swt.widgets.Shell
+import swtlin.core.ControlBuilder
+import swtlin.core.ControlBuilderContainer
+import swtlin.core.IdentifiedControlBuilderContainer
 
 fun Shell.children(block: ShellChildrenDescription.() -> Unit): Shell {
     val description = ShellChildrenDescription(this)
@@ -11,7 +14,7 @@ fun Shell.children(block: ShellChildrenDescription.() -> Unit): Shell {
 }
 
 class ShellChildrenDescription(private val shell: Shell) : ControlBuilderContainer {
-    private val container = GenericControlBuilderContainer()
+    private val container = IdentifiedControlBuilderContainer()
 
     private var _layout: LayoutDescription? = null
     var layout: LayoutDescription

@@ -1,6 +1,7 @@
 package swtlin
 
 import org.eclipse.swt.widgets.Table
+import swtlin.core.*
 
 fun table(block: TableDescription.() -> Unit = {}) = builder(::TableBuilder, block)
 

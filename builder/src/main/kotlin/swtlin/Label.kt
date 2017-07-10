@@ -1,6 +1,7 @@
 package swtlin
 
 import org.eclipse.swt.widgets.Label
+import swtlin.core.*
 
 fun label(block: LabelDescription.() -> Unit = {}) = builder(::LabelBuilder, block)
 
