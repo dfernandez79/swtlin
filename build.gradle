@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlinVersion = "1.1.50"
+    ext.kotlinVersion = "1.1.51"
     ext.swtVersion = "4.6.1"
     ext.osName = System.getProperty("os.name").toLowerCase(Locale.ENGLISH)
 
