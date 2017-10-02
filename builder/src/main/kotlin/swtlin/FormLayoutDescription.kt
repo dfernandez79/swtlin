@@ -9,8 +9,10 @@ import org.eclipse.swt.widgets.Control
 import swtlin.core.ControlDescription
 import swtlin.core.ControlReferences
 
-fun formLayout(marginLeft: Int = 0, marginTop: Int = 0,
-               marginRight: Int = marginLeft, marginBottom: Int = marginTop) =
+fun formLayout(marginWidth: Int = 0, marginHeight: Int = 0) =
+        formLayout(marginWidth, marginHeight, marginWidth, marginHeight)
+
+fun formLayout(marginLeft: Int, marginTop: Int, marginRight: Int, marginBottom: Int) =
         FormLayoutDescription(marginLeft, marginTop, marginRight, marginBottom)
 
 class ControlAttachment(private val id: String, private val offset: Int, private val alignment: Int) {

@@ -1,5 +1,6 @@
 package swtlin.core
 
+import org.eclipse.swt.events.DisposeEvent
 import org.eclipse.swt.graphics.Color
 import org.eclipse.swt.widgets.Control
 import swtlin.ResourceFactory
@@ -11,6 +12,7 @@ import swtlin.systemColor
  * Specific controls will extend this interface to provide additional properties.
  */
 interface ControlDescription<C : Control> {
+    var size : Pair<Int, Int>?
     var style: Int
     val layoutData: MutableMap<String, Any?>
     var left: Any?
@@ -19,6 +21,10 @@ interface ControlDescription<C : Control> {
     var bottom: Any?
     var background: ResourceFactory<Color>?
     val setUpBlocks: Iterable<(C, ControlReferences) -> Unit>
+
+    fun size(width: Int, height: Int) {
+        size = Pair(width, height)
+    }
 
     /**
      * Adds a function that will be executed right after the control instance is created.
@@ -34,4 +40,7 @@ interface ControlDescription<C : Control> {
      * @param block a function that receives the control instance.
      */
     fun setUp(block: (C) -> Unit) = setUp({ control, _ -> block(control) })
+
+    fun onDispose(block: (evt: DisposeEvent, C, ControlReferences) -> Unit)
+    fun onDisposeDo(block: () -> Unit) = onDispose({ _, _, _ -> block() })
 }

@@ -35,6 +35,10 @@ class ShellChildrenDescription(private val shell: Shell) : ControlBuilderContain
         container.add(id, builder)
     }
 
+    fun size(width: Int, height: Int) {
+        shell.setSize(width, height)
+    }
+
     fun createChildren() {
         val refs = mutableMapOf<String, Control>()
         val pairs = container.children.map { it.builder to it.createControl(shell, refs) }

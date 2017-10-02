@@ -1,18 +1,17 @@
 package swtlin.examples
 
 import org.eclipse.swt.SWT
-import org.eclipse.swt.widgets.Button
 import org.eclipse.swt.widgets.Shell
+import org.eclipse.swt.widgets.Table
+import org.eclipse.swt.widgets.TableItem
+import org.eclipse.swt.widgets.Text
 import swtlin.*
 
 fun main(args: Array<String>) {
     example {
-        val shell = Shell()
-        var ref: Button? = null
+        Shell().children {
 
-        shell.setSize(300, 200)
-
-        shell.children {
+            size(300, 200)
             layout = formLayout(5, 5)
 
             text("todoInput") {
@@ -25,25 +24,27 @@ fun main(args: Array<String>) {
                 text = "Add"
                 top = 0
                 right = 0
-                background = systemColor(SWT.COLOR_RED)
 
-                setUp { btn -> ref = btn }
+                onSelection { _, _, refs ->
+                    val table = refs["todoList"] as Table
+                    val input = refs["todoInput"] as Text
+                    val text = input.text.orEmpty()
+
+                    if (text.isNotEmpty()) {
+                        TableItem(table, SWT.NONE).text = text
+                    }
+                }
             }
 
-            table {
+            table("todoList") {
                 top = 10 fromBottomOf "todoInput"
                 left = 0
                 right = 0
                 bottom = 0
             }
-        }
-        shell.layout()
 
-        if (ref != null) {
-            println(ref?.borderWidth)
-            println(ref?.bounds)
+        }.apply {
+            layout()
         }
-
-        shell
     }
 }
