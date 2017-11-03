@@ -18,6 +18,10 @@ fun main(args: Array<String>) {
                 left = 0
                 top = 0
                 right = 10 fromLeftOf "add"
+
+                onKeyPressed { evt, _, _ ->
+                    println(evt.keyCode)
+                }
             }
 
             button("add") {
@@ -25,15 +29,7 @@ fun main(args: Array<String>) {
                 top = 0
                 right = 0
 
-                onSelection { _, _, refs ->
-                    val table = refs["todoList"] as Table
-                    val input = refs["todoInput"] as Text
-                    val text = input.text.orEmpty()
-
-                    if (text.isNotEmpty()) {
-                        TableItem(table, SWT.NONE).text = text
-                    }
-                }
+                onSelectionDoWithRefs { addItem(it["todoList"] as Table, it["todoInput"] as Text) }
             }
 
             table("todoList") {
@@ -47,4 +43,13 @@ fun main(args: Array<String>) {
             layout()
         }
     }
+}
+
+fun addItem(table: Table, input: Text) {
+    val text = input.text.orEmpty()
+
+    if (text.isNotEmpty()) {
+        TableItem(table, SWT.NONE).text = text
+    }
+
 }

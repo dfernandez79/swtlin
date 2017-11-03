@@ -2,6 +2,7 @@ package swtlin
 
 import org.eclipse.swt.events.SelectionAdapter
 import org.eclipse.swt.events.SelectionEvent
+import org.eclipse.swt.events.SelectionListener
 import org.eclipse.swt.widgets.Button
 import org.eclipse.swt.widgets.Control
 import swtlin.core.*
@@ -16,12 +17,14 @@ interface ButtonDescription : ControlDescription<Button> {
     var text: String
 
     fun onSelection(block: (SelectionEvent, Button, ControlReferences) -> Unit)
+    fun onSelectionDoWithRefs(block: (ControlReferences) -> Unit) = onSelection({_, _, refs -> block(refs)})
     fun onSelectionDo(block: () -> Unit) = onSelection({_, _, _ -> block()})
 }
 
 class ButtonBuilder : AbstractControlBuilder<Button>(::Button), ButtonDescription {
     override var text: String = ""
 
+    private val selectionListeners = mutableListOf<SelectionListener>()
     private val selectionBlocks = mutableListOf<((evt: SelectionEvent, Button, ControlReferences) -> Unit)>()
 
     override fun setUpControl(control: Button, refs: MutableControlReferences?) {
